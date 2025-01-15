@@ -1,15 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { NavLink } from "react-router-dom"; // Use NavLink for active class functionality
 
 export default function Navbar(props) {
   return (
     <nav
-      className={`navbar navbar-expand-lg navbar-${props.mode} bg-${props.mode}`}
+      className={`navbar navbar-expand-lg navbar-${props.mode} bg-${props.mode} shadow-sm`}
     >
       <div className="container-fluid">
-        <a className="navbar-brand" href="/">
+        {/* Brand Name */}
+        <NavLink className="navbar-brand fw-bold" to="/">
           {props.title}
-        </a>
+        </NavLink>
         <button
           className="navbar-toggler"
           type="button"
@@ -21,51 +23,72 @@ export default function Navbar(props) {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
+
+        {/* Navbar Links and Features */}
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="/">
+              <NavLink
+                className={({ isActive }) =>
+                  `nav-link ${isActive ? "active fw-bold" : ""}`
+                }
+                aria-current="page"
+                to="/"
+              >
                 Home
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/about">
+              <NavLink
+                className={({ isActive }) =>
+                  `nav-link ${isActive ? "active fw-bold" : ""}`
+                }
+                to="/about"
+              >
                 {props.aboutText}
-              </a>
+              </NavLink>
             </li>
           </ul>
 
-          {/* Switch to toggle mode */}
-          <div
-            className={`form-check form-switch text-${
-              props.mode === "light" ? "dark" : "light"
-            }`}
-          >
-            <input
-              className="form-check-input"
-              type="checkbox"
-              id="flexSwitchCheckDefault"
-              onChange={props.toggleMode}
-              checked={props.mode === "dark"}
-            />
-            <label
-              className="form-check-label"
-              htmlFor="flexSwitchCheckDefault"
+          {/* Mode Toggle Switch */}
+          <div className="d-flex align-items-center me-3">
+            <div
+              className={`form-check form-switch text-${
+                props.mode === "light" ? "dark" : "light"
+              }`}
             >
-              {props.mode === "light"
-                ? "Enable Dark Mode"
-                : "Enable Light Mode"}
-            </label>
+              <input
+                className="form-check-input"
+                type="checkbox"
+                id="flexSwitchCheckDefault"
+                onChange={props.toggleMode}
+                checked={props.mode === "dark"}
+              />
+              <label
+                className="form-check-label"
+                htmlFor="flexSwitchCheckDefault"
+              >
+                {props.mode === "light"
+                  ? "Enable Dark Mode"
+                  : "Enable Light Mode"}
+              </label>
+            </div>
           </div>
 
+          {/* Search Box */}
           <form className="d-flex ms-3" role="search">
             <input
               className="form-control me-2"
               type="search"
-              placeholder="Search"
+              placeholder="Search..."
               aria-label="Search"
             />
-            <button className="btn btn-outline-success" type="submit">
+            <button
+              className={`btn btn-outline-${
+                props.mode === "dark" ? "light" : "dark"
+              }`}
+              type="submit"
+            >
               Search
             </button>
           </form>
@@ -83,6 +106,6 @@ Navbar.propTypes = {
 };
 
 Navbar.defaultProps = {
-  title: "BinaryBitt",
+  title: "Word Play",
   aboutText: "About",
 };
